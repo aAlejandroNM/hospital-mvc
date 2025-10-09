@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diseases>
+    <disease>
+        <id>1</id>
+        <name>Common Cold</name>
+        <description>A common viral infection of the nose and throat.</description>
+    </disease>
+    <disease>
+        <id>2</id>
+        <name>Influenza</name>
+        <description>A viral infection that attacks your respiratory system.</description>
+    </disease>
+    <disease>
+        <id>3</id>
+        <name>Bronchitis</name>
+        <description>Inflammation of the lining of your bronchial tubes.</description>
+    </disease>
+</diseases>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<symptoms>
+    <symptom>
+        <id>1</id>
+        <name>Fever</name>
+        <description>A temporary increase in average body temperature.</description>
+        <severity>MILD</severity>
+    </symptom>
+    <symptom>
+        <id>2</id>
+        <name>Cough</name>
+        <description>A reflex action to clear your airways of mucus and irritants.</description>
+        <severity>MODERATE</severity>
+    </symptom>
+    <symptom>
+        <id>3</id>
+        <name>Headache</name>
+        <description>Pain in any region of the head.</description>
+        <severity>MILD</severity>
+    </symptom>
+</symptoms>
