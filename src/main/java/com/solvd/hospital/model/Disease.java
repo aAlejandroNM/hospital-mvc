@@ -1,8 +1,22 @@
 package com.solvd.hospital.model;
 
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "disease")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Disease {
+
+    @XmlElement(name = "id")
     private Long id;
+
+    @XmlElement(name = "name")
     private String name;
+
+    @XmlElement(name = "description")
     private String description;
 
     public Disease() {

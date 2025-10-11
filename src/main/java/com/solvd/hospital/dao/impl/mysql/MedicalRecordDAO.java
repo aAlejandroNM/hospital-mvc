@@ -71,7 +71,7 @@ public class MedicalRecordDAO extends BaseDao implements IMedicalRecordDAO {
                 Disease disease = new Disease(rs.getLong("disease_id"), rs.getString("disease_name"), rs.getString("disease_description"));
                 MedicalSpecialty specialty = new MedicalSpecialty(rs.getInt("specialty_id"), rs.getString("specialty_name"));
                 Staff staff = new Staff(rs.getLong("staff_id"), rs.getString("staff_name"), rs.getInt("staff_age"), rs.getTimestamp("staff_created_at"), specialty, rs.getDate("hired_at"));
-                medicalRecord = new MedicalRecord(rs.getLong("id"), rs.getString("document_type"), rs.getTimestamp("creation_date"), patient, disease, staff);
+                medicalRecord = new MedicalRecord(rs.getLong("id"), rs.getString("document_type"), rs.getTimestamp("creation_date"), patient, disease, null, staff);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -106,7 +106,7 @@ public class MedicalRecordDAO extends BaseDao implements IMedicalRecordDAO {
                 Disease disease = new Disease(rs.getLong("disease_id"), rs.getString("disease_name"), rs.getString("disease_description"));
                 MedicalSpecialty specialty = new MedicalSpecialty(rs.getInt("specialty_id"), rs.getString("specialty_name"));
                 Staff staff = new Staff(rs.getLong("staff_id"), rs.getString("staff_name"), rs.getInt("staff_age"), rs.getTimestamp("staff_created_at"), specialty, rs.getDate("hired_at"));
-                medicalRecords.add(new MedicalRecord(rs.getLong("id"), rs.getString("document_type"), rs.getTimestamp("creation_date"), patient, disease, staff));
+                medicalRecords.add(new MedicalRecord(rs.getLong("id"), rs.getString("document_type"), rs.getTimestamp("creation_date"), patient, disease,null, staff));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -129,7 +129,7 @@ public class MedicalRecordDAO extends BaseDao implements IMedicalRecordDAO {
             String recordSql = "UPDATE medical_record SET patient_id = ?, disease_id = ?, created_by_staff_id = ? WHERE id = ?";
             PreparedStatement psRecord = conn.prepareStatement(recordSql);
             psRecord.setLong(1, medicalRecord.getPatient().getId());
-            psRecord.setLong(2, medicalRecord.getDisease().getId());
+            //psRecord.setLong(2, medicalRecord.getDisease().getId());
             psRecord.setLong(3, medicalRecord.getCreatedBy().getId());
             psRecord.setLong(4, medicalRecord.getId());
             psRecord.executeUpdate();

@@ -1,6 +1,7 @@
 package com.solvd.hospital;
 
 import com.solvd.hospital.model.*;
+import com.solvd.hospital.service.impl.XMLServiceImpl;
 import com.solvd.hospital.service.impl.SAXParserServiceImpl;
 import com.solvd.hospital.service.impl.*;
 import com.solvd.hospital.service.interfaces.*;
@@ -19,6 +20,7 @@ public class Main {
         IDiagnosisService diagnosisService = new DiagnosisServiceImpl();
         ITreatmentService treatmentService = new TreatmentServiceImpl();
         IParserService saxParserService = new SAXParserServiceImpl();
+        IXMLService xmlService = new XMLServiceImpl();
 
         //Register a new patient
         System.out.println("\n--- 1. Registering a new patient ");
@@ -46,7 +48,7 @@ public class Main {
             //Diagnose the patient
             System.out.println("\n 4. Diagnosing the patient ---");
             Disease diagnosedDisease = new Disease(1L, "Hypertension", "High blood pressure");
-            MedicalRecord medicalRecord = new MedicalRecord(null, "DIAGNOSIS", null, newPatient, diagnosedDisease, assignedDoctor);
+            MedicalRecord medicalRecord = new MedicalRecord(null, "DIAGNOSIS", null, newPatient, diagnosedDisease,List.of(diagnosedDisease), assignedDoctor);
             diagnosisService.recordDiagnosis(medicalRecord);
             System.out.println("Diagnosis recorded. Medical Record ID: " + medicalRecord.getId());
 
@@ -57,15 +59,21 @@ public class Main {
             System.out.println("Treatment prescribed with ID: " + newTreatment.getId());
         }
 
+        System.out.println("\n--- Loading Medical Record using JAXB Parser ---");
+
+        String medicalRecordXmlPath = "src/main/resources/xml/medical-record.xml";
+        String medicalRecordXsdPath = "src/main/resources/xml/medical-record.xsd";
+        MedicalRecord medicalRecordFromXml = xmlService.parseMedicalRecord(medicalRecordXmlPath, medicalRecordXsdPath);
+
+        if (medicalRecordFromXml != null) {
+            System.out.println("\nMedical Record loaded from XML:");
+            medicalRecordFromXml.getDiseases()
+                    .forEach(d -> System.out.println(" - " + d.getName() + ": " + d.getDescription()));
+        } else {
+            System.out.println("\nCould not parse Medical Record from XML.");
+        }
+
         System.out.println("\n--- Loading catalogs using SAX Parser ---");
-
-        // Parse diseases
-        String diseasesPath = "src/main/resources/xml/diseases.xml";
-        List<Disease> diseasesFromXml = saxParserService.parseDiseases(diseasesPath);
-        System.out.println("\nDiseases loaded from XML:");
-        diseasesFromXml
-                .forEach(d -> System.out.println(" - " + d.getName() + ": " + d.getDescription()));
-
         //Parse symptoms
         String symptomsPath = "src/main/resources/xml/symptoms.xml";
         List<Symptom> symptomsFromXml = saxParserService.parseSymptoms(symptomsPath);
