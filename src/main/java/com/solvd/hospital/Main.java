@@ -9,6 +9,7 @@ import com.solvd.hospital.service.interfaces.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -21,6 +22,7 @@ public class Main {
         ITreatmentService treatmentService = new TreatmentServiceImpl();
         IParserService saxParserService = new SAXParserServiceImpl();
         IXMLService xmlService = new XMLServiceImpl();
+        IJsonService jsonService = new JsonServiceImpl();
 
         //Register a new patient
         System.out.println("\n--- 1. Registering a new patient ");
@@ -80,6 +82,29 @@ public class Main {
         System.out.println("\nSymptoms loaded from XML:");
         symptomsFromXml
                 .forEach(s -> System.out.println(" - " + s.getName() + " (" + s.getSeverity() + "): " + s.getDescription()));
+
+        System.out.println("\n--- Handling Medical Documents from JSON ---");
+        String jsonFilePath = "src/main/resources/json/medical-document.json";
+
+        System.out.println("\n--- Reading medical documents from JSON ---");
+        List<MedicalDocument> medicalDocuments = jsonService.readMedicalDocuments(jsonFilePath);
+        if (medicalDocuments.isEmpty()) {
+            System.out.println("No medical documents found or error reading file.");
+        } else {
+            System.out.println("Medical documents loaded from JSON:");
+            medicalDocuments.forEach(doc ->
+                    System.out.println(" - ID: " + doc.getId() +
+                            ", Type: " + doc.getDocumentType() +
+                            ", Date: " + doc.getCreationDate()));
+        }
+
+        System.out.println("\n--- Adding a new medical document and writing to JSON ---");
+        List<MedicalDocument> modifiableMedicalDocuments = new ArrayList<>(medicalDocuments);
+        MedicalDocument newMedicalDocument = new MedicalDocument(4L, "CT Scan", Timestamp.from(Instant.now()));
+        modifiableMedicalDocuments.add(newMedicalDocument);
+
+        jsonService.writeMedicalDocuments(jsonFilePath, modifiableMedicalDocuments);
+        System.out.println("New medical document added and list updated in JSON file.");
 
         System.out.println("\nHospital flow simulation finished.");
     }

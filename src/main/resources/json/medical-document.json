@@ -1,0 +1,13 @@
+[ {
+  "id" : 1,
+  "documentType" : "X-Ray",
+  "creationDate" : 1705314600000
+}, {
+  "id" : 2,
+  "documentType" : "Blood Test Results",
+  "creationDate" : 1708416000000
+}, {
+  "id" : 3,
+  "documentType" : "MRI Scan",
+  "creationDate" : 1710079200000
+}]
