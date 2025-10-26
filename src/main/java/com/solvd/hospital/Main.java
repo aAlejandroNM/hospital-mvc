@@ -5,6 +5,8 @@ import com.solvd.hospital.service.impl.XMLServiceImpl;
 import com.solvd.hospital.service.impl.SAXParserServiceImpl;
 import com.solvd.hospital.service.impl.*;
 import com.solvd.hospital.service.interfaces.*;
+import com.solvd.hospital.dao.impl.mybatis.DoctorMyBatisImpl;
+import com.solvd.hospital.dao.impl.mybatis.PatientMyBatisImpl;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -15,8 +17,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
-        IPatientService patientService = new PatientServiceImpl();
-        IDoctorService doctorService = new DoctorServiceImpl();
+        IPatientService patientService = new PatientMyBatisImpl();
+        IDoctorService doctorService = new DoctorMyBatisImpl();
         IAppointmentService appointmentService = new AppointmentServiceImpl();
         IDiagnosisService diagnosisService = new DiagnosisServiceImpl();
         ITreatmentService treatmentService = new TreatmentServiceImpl();

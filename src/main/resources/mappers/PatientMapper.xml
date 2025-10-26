@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.dao.interfaces.IPatientDAO">
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO patient (id, insurance_number) VALUES (#{id}, #{insuranceNumber})
+    </insert>
+
+    <select id="getById" resultMap="PatientResultMap">
+        SELECT p.id, p.name, p.age, pa.insurance_number FROM person p JOIN patient pa ON p.id = pa.id WHERE p.id = #{id}
+    </select>
+
+    <select id="getAll" resultMap="PatientResultMap">
+        SELECT p.id, p.name, p.age, pa.insurance_number FROM person p JOIN patient pa ON p.id = pa.id
+    </select>
+
+    <update id="update">
+        UPDATE person SET name = #{name}, age = #{age} WHERE id = #{id};
+        UPDATE patient SET insurance_number = #{insuranceNumber} WHERE id = #{id};
+    </update>
+
+    <delete id="delete">
+        DELETE FROM person WHERE id = #{id}
+    </delete>
+
+    <resultMap id="PatientResultMap" type="com.solvd.hospital.model.Patient" autoMapping="false">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="insuranceNumber" column="insurance_number"/>
+    </resultMap>
+</mapper>

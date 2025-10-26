@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.dao.interfaces.IDoctorDAO">
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO staff (id, specialty_id, hired_at) VALUES (#{id}, #{specialty.id}, #{hiredAt});
+        INSERT INTO doctor (staff_id, license_code) VALUES (#{id}, #{licenseCode});
+    </insert>
+
+    <select id="getById" resultMap="DoctorResultMap">
+        SELECT p.id, p.name, p.age, p.created_at, s.hired_at, d.license_code, ms.id as specialty_id, ms.name as specialty_name
+        FROM person p
+        JOIN staff s ON p.id = s.id
+        JOIN doctor d ON s.id = d.staff_id
+        JOIN medical_specialty ms ON s.specialty_id = ms.id
+        WHERE p.id = #{id}
+    </select>
+
+    <select id="getAll" resultMap="DoctorResultMap">
+        SELECT p.id, p.name, p.age, p.created_at, s.hired_at, d.license_code, ms.id as specialty_id, ms.name as specialty_name
+        FROM person p
+        JOIN staff s ON p.id = s.id
+        JOIN doctor d ON s.id = d.staff_id
+        JOIN medical_specialty ms ON s.specialty_id = ms.id
+    </select>
+
+    <update id="update">
+        UPDATE person SET name = #{name}, age = #{age} WHERE id = #{id};
+        UPDATE staff SET specialty_id = #{specialty.id}, hired_at = #{hiredAt} WHERE id = #{id};
+        UPDATE doctor SET license_code = #{licenseCode} WHERE staff_id = #{id};
+    </update>
+
+    <delete id="delete">
+        DELETE FROM person WHERE id = #{id}
+    </delete>
+
+    <resultMap id="DoctorResultMap" type="com.solvd.hospital.model.Doctor" autoMapping="false">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="hiredAt" column="hired_at"/>
+        <result property="licenseCode" column="license_code"/>
+        <association property="specialty" javaType="com.solvd.hospital.model.MedicalSpecialty">
+            <id property="id" column="specialty_id"/>
+            <result property="name" column="specialty_name"/>
+        </association>
+    </resultMap>
+</mapper>
