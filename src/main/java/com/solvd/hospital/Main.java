@@ -3,6 +3,8 @@ package com.solvd.hospital;
 import com.solvd.hospital.model.*;
 import com.solvd.hospital.service.ServiceFactory;
 import com.solvd.hospital.service.interfaces.*;
+import com.solvd.hospital.strategy.DoctorSelectionStrategy;
+import com.solvd.hospital.strategy.FirstAvailableStrategy;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -27,20 +29,28 @@ public class Main {
         patientService.registerNewPatient(newPatient);
         System.out.println("New patient registered with ID: " + newPatient.getId());
 
-        //Find an available doctor
+        //Find an available doctor with strategy
         System.out.println("\n--- 2. Finding an available doctor ---");
         List<Doctor> doctors = doctorService.getAvailableDoctors();
         if (doctors.isEmpty()) {
             System.out.println("No doctors available. Exiting.");
             System.out.println("No doctors found. Please populate the database.");
         } else {
-            Doctor assignedDoctor = doctors.getFirst();
+            DoctorSelectionStrategy strategy = new FirstAvailableStrategy();
+            Doctor assignedDoctor = strategy.select(doctors);
             System.out.println("Assigned doctor: " + assignedDoctor.getName() + " (" + assignedDoctor.getSpecialty().getName() + ")");
 
             //Schedule an appointment
             System.out.println("\n--- 3. Scheduling an appointment ---");
             AppointmentStatus status = new AppointmentStatus(1, "SCHEDULED");
-            Appointment newAppointment = new Appointment(null, newPatient, assignedDoctor, Timestamp.from(Instant.now()), status, null);
+            Appointment newAppointment = Appointment.builder()
+                    .id(null)
+                    .patient(newPatient)
+                    .doctor(assignedDoctor)
+                    .date(Timestamp.from(Instant.now()))
+                    .status(status)
+                    .createdAt(null)
+                    .build();
             appointmentService.scheduleAppointment(newAppointment);
             System.out.println("New appointment scheduled with ID: " + newAppointment.getId());
 

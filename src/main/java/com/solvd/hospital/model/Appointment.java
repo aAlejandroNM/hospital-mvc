@@ -69,4 +69,51 @@ public class Appointment {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private Patient patient;
+        private Doctor doctor;
+        private Timestamp date;
+        private AppointmentStatus status;
+        private Timestamp createdAt;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder patient(Patient patient) {
+            this.patient = patient;
+            return this;
+        }
+
+        public Builder doctor(Doctor doctor) {
+            this.doctor = doctor;
+            return this;
+        }
+
+        public Builder date(Timestamp date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder status(AppointmentStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder createdAt(Timestamp createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Appointment build() {
+            return new Appointment(id, patient, doctor, date, status, createdAt);
+        }
+    }
 }
