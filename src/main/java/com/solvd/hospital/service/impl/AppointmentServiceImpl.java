@@ -14,6 +14,10 @@ public class AppointmentServiceImpl implements IAppointmentService {
         this.appointmentDAO = new AppointmentDAO();
     }
 
+    public AppointmentServiceImpl(IAppointmentDAO appointmentDAO) {
+        this.appointmentDAO = appointmentDAO;
+    }
+
     @Override
     public void scheduleAppointment(Appointment appointment) {
         appointmentDAO.create(appointment);

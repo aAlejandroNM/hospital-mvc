@@ -14,6 +14,10 @@ public class DiagnosisServiceImpl implements IDiagnosisService {
         this.medicalRecordDAO = new MedicalRecordDAO();
     }
 
+    public DiagnosisServiceImpl(IMedicalRecordDAO medicalRecordDAO) {
+        this.medicalRecordDAO = medicalRecordDAO;
+    }
+
     @Override
     public void recordDiagnosis(MedicalRecord medicalRecord) {
         medicalRecordDAO.create(medicalRecord);

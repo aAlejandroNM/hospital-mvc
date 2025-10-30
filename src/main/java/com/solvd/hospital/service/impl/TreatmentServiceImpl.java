@@ -14,6 +14,10 @@ public class TreatmentServiceImpl implements ITreatmentService {
         this.treatmentDAO = new TreatmentDAO();
     }
 
+    public TreatmentServiceImpl(ITreatmentDAO treatmentDAO) {
+        this.treatmentDAO = treatmentDAO;
+    }
+
     @Override
     public void prescribeTreatment(Treatment treatment) {
         treatmentDAO.create(treatment);
