@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="FullSuite" verbose="1" parallel="false">
+    <test name="All-Tests">
+        <parameter name="jsonFilePath" value="src/main/resources/json/medical-document.json"/>
+        <classes>
+            <class name="com.solvd.hospital.service.PatientServiceImplTest"/>
+            <class name="com.solvd.hospital.service.ClinicalServicesTest"/>
+            <class name="com.solvd.hospital.integration.ParsingIntegrationTest"/>
+        </classes>
+    </test>
+</suite>
+
+
